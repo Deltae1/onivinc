@@ -1,35 +1,32 @@
 import { motion } from "framer-motion";
 
 const stats = [
-  { value: "10+", label: "Years Experience" },
+  { value: "10+",    label: "Years Experience" },
   { value: "1,000+", label: "Professionals Trained" },
-  { value: "9", label: "Major Media Clients" },
+  { value: "9",      label: "Major Media Clients" },
 ];
 
 const About = () => {
   return (
-    <section id="about" style={{ background: "#0a0a0a" }} className="py-28 md:py-36">
-      <div className="max-w-6xl mx-auto px-4 md:px-8">
+    <section id="about" style={{ background: "#080C10" }} className="section-padding">
+      <div className="container-max">
         <div className="grid md:grid-cols-2 gap-20 items-center">
+
+          {/* Left — copy */}
           <motion.div
-            initial={{ opacity: 0, x: -30 }}
+            initial={{ opacity: 0, x: -28 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.8 }}
           >
-            <p
-              className="text-xs uppercase tracking-[0.35em] mb-5 font-semibold"
-              style={{ color: "#C9A84C" }}
-            >
-              Who We Are
-            </p>
+            <p className="class-label mb-5">// IDENT — WHO WE ARE</p>
             <h2
               className="font-bold leading-tight mb-8"
               style={{ fontSize: "clamp(2rem, 4vw, 3rem)", color: "white" }}
             >
               Washington DC's Premier TV &amp; Digital Media Production Firm
             </h2>
-            <div className="space-y-5" style={{ color: "rgba(255,255,255,0.55)" }}>
+            <div className="space-y-5" style={{ color: "rgba(210,220,230,0.5)", fontSize: "0.95rem" }}>
               <p className="leading-relaxed">
                 ONIV INC. is a creative solutions firm focused on differentiated strategic
                 positioning and smart design — creating engaging content and delivering
@@ -50,34 +47,34 @@ const About = () => {
             </p>
           </motion.div>
 
+          {/* Right — stats as terminal cards */}
           <motion.div
-            initial={{ opacity: 0, x: 30 }}
+            initial={{ opacity: 0, x: 28 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.8, delay: 0.15 }}
-            className="space-y-0"
+            className="space-y-4"
           >
             {stats.map((stat, i) => (
-              <div
+              <motion.div
                 key={stat.label}
-                className="py-10"
-                style={{
-                  borderBottom: i < stats.length - 1 ? "1px solid rgba(255,255,255,0.07)" : "none",
-                }}
+                initial={{ opacity: 0, y: 16 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.6, delay: i * 0.12 }}
+                className="t-card p-8"
               >
                 <div
                   className="font-bold leading-none mb-3"
-                  style={{ fontSize: "clamp(3.5rem, 7vw, 5.5rem)", color: "#C9A84C" }}
+                  style={{
+                    fontSize: "clamp(3rem, 6vw, 4.5rem)",
+                    color: "#C9A84C",
+                  }}
                 >
                   {stat.value}
                 </div>
-                <div
-                  className="text-sm uppercase tracking-[0.25em]"
-                  style={{ color: "rgba(255,255,255,0.4)" }}
-                >
-                  {stat.label}
-                </div>
-              </div>
+                <div className="class-label">{stat.label}</div>
+              </motion.div>
             ))}
           </motion.div>
         </div>

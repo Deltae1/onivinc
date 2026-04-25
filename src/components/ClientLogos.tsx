@@ -11,16 +11,8 @@ const clients = [
 ];
 
 const LogoItem = ({ name }: { name: string }) => (
-  <div
-    className="flex-shrink-0 flex items-center justify-center px-10"
-    style={{ minWidth: "220px" }}
-  >
-    <span
-      className="text-xs font-semibold uppercase tracking-[0.18em] whitespace-nowrap"
-      style={{ color: "rgba(255,255,255,0.28)" }}
-    >
-      {name}
-    </span>
+  <div className="flex-shrink-0 flex items-center justify-center px-10" style={{ minWidth: "230px" }}>
+    <span className="redact text-xs font-semibold uppercase tracking-[0.18em]">{name}</span>
   </div>
 );
 
@@ -28,23 +20,36 @@ const ClientLogos = () => {
   const doubled = [...clients, ...clients];
 
   return (
-    <section style={{ background: "#0d0d0d", borderTop: "1px solid rgba(255,255,255,0.05)", borderBottom: "1px solid rgba(255,255,255,0.05)" }} className="py-12 overflow-hidden">
+    <section
+      className="py-14 overflow-hidden"
+      style={{
+        background: "#080C10",
+        borderTop:    "1px solid rgba(10,132,255,0.08)",
+        borderBottom: "1px solid rgba(10,132,255,0.08)",
+      }}
+    >
       <p
-        className="text-center text-xs uppercase tracking-[0.35em] mb-8"
-        style={{ color: "rgba(201,168,76,0.6)" }}
+        className="text-center mb-8 class-label"
+        style={{ color: "rgba(201,168,76,0.55)" }}
       >
-        Trusted By
+        // VERIFIED OPERATORS — TRUSTED BY
       </p>
-      <div className="relative overflow-hidden">
+      <div className="overflow-hidden">
         <div
           className="flex"
-          style={{ animation: "marquee 30s linear infinite", width: "max-content" }}
+          style={{ animation: "marquee 32s linear infinite", width: "max-content" }}
         >
           {doubled.map((name, i) => (
             <LogoItem key={`${name}-${i}`} name={name} />
           ))}
         </div>
       </div>
+      <p
+        className="text-center mt-5 class-label"
+        style={{ color: "rgba(10,132,255,0.3)" }}
+      >
+        hover to reveal
+      </p>
     </section>
   );
 };
