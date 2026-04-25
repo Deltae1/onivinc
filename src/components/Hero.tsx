@@ -4,12 +4,12 @@ import { Shield } from "lucide-react";
 import heroBg from "@/assets/reference/broadcast-studio.jpg";
 
 const BOOT_LINES = [
-  { text: "ONIV-INC OS v3.0 · SECURE BOOT",           delay: 0 },
-  { text: "kernel integrity................[OK]",       delay: 0.4 },
-  { text: "zero-trust enforcement..........[ON]",      delay: 0.8 },
-  { text: "cloud infra stack...............[OK]",      delay: 1.2 },
-  { text: "media production network........[OK]",      delay: 1.6 },
-  { text: "session authenticated — access granted.",   delay: 2.0 },
+  { text: "ONIV-INC OS v3.0 · SECURE BOOT",          delay: 0 },
+  { text: "kernel integrity................[OK]",      delay: 0.4 },
+  { text: "zero-trust enforcement..........[ON]",     delay: 0.8 },
+  { text: "cloud infra stack...............[OK]",     delay: 1.2 },
+  { text: "media production network........[OK]",     delay: 1.6 },
+  { text: "session authenticated — access granted.",  delay: 2.0 },
 ];
 
 const Hero = () => {
@@ -54,7 +54,7 @@ const Hero = () => {
         ctx.fillText(Math.random() > 0.5 ? "1" : "0", col.x, col.y);
         col.y += col.speed;
         if (col.y > canvas.height) {
-          col.y     = -FONT;
+          col.y       = -FONT;
           col.speed   = 0.25 + Math.random() * 0.4;
           col.opacity = 0.04 + Math.random() * 0.1;
         }
@@ -78,7 +78,7 @@ const Hero = () => {
           className="absolute inset-0"
           style={{
             background:
-              "linear-gradient(105deg, rgba(8,12,16,0.92) 0%, rgba(8,12,16,0.75) 55%, rgba(8,12,16,0.4) 100%)",
+              "linear-gradient(105deg, rgba(8,12,16,0.95) 0%, rgba(8,12,16,0.82) 55%, rgba(8,12,16,0.5) 100%)",
           }}
         />
       </div>
@@ -90,27 +90,17 @@ const Hero = () => {
         style={{ opacity: 0.45, mixBlendMode: "screen" }}
       />
 
-      {/* Horizontal divider line */}
-      <div
-        className="absolute left-0 right-0"
-        style={{
-          top: "50%",
-          height: "1px",
-          background: "linear-gradient(90deg, transparent, rgba(10,132,255,0.08), transparent)",
-        }}
-      />
-
       <div className="relative z-10 max-w-6xl mx-auto px-4 md:px-8 py-32 w-full">
         <div className="grid lg:grid-cols-2 gap-16 items-center">
 
-          {/* LEFT — main copy */}
+          {/* LEFT */}
           <div>
             {/* Classification badge */}
             <motion.div
               initial={{ opacity: 0, x: -20 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.5 }}
-              className="inline-flex items-center gap-3 mb-8 px-3 py-1.5"
+              className="inline-flex items-center gap-3 mb-10 px-3 py-1.5"
               style={{
                 border: "1px solid rgba(10,132,255,0.25)",
                 background: "rgba(10,132,255,0.06)",
@@ -121,90 +111,77 @@ const Hero = () => {
               <span className="cursor" />
             </motion.div>
 
-            {/* Headline */}
+            {/* Stacked headline */}
             <motion.div
               initial={{ opacity: 0, y: 24 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 0.15 }}
             >
               <h1
-                className="font-bold leading-none mb-4"
-                style={{
-                  fontSize: "clamp(3.2rem, 8vw, 6.5rem)",
-                  color: "#C9A84C",
-                  letterSpacing: "-0.02em",
-                }}
+                className="font-bold leading-none"
+                style={{ fontSize: "clamp(3rem, 7.5vw, 6rem)", letterSpacing: "-0.02em" }}
               >
-                ONIV INC.
+                <span style={{ color: "white" }}>Innovative.</span>
+                <br />
+                <span style={{ color: "#0A84FF" }}>Modern.</span>
+                <br />
+                <span style={{ color: "#C9A84C" }}>Budget-Friendly.</span>
               </h1>
-              <p
-                className="font-semibold leading-tight mb-3"
-                style={{ fontSize: "clamp(1.2rem, 3vw, 2rem)", color: "white" }}
-              >
-                Creative Solutions. Expert Teams.
-              </p>
-              <p
-                className="font-medium mb-8"
-                style={{
-                  fontSize: "clamp(1rem, 2.5vw, 1.6rem)",
-                  color: "rgba(210,220,230,0.5)",
-                }}
-              >
-                Broadcast-Ready.
-              </p>
             </motion.div>
 
             <motion.p
               initial={{ opacity: 0, y: 16 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.7, delay: 0.35 }}
-              className="leading-relaxed mb-10 max-w-lg"
+              transition={{ duration: 0.7, delay: 0.4 }}
+              className="leading-relaxed mt-8 mb-10 max-w-lg"
               style={{ color: "rgba(210,220,230,0.5)", fontSize: "0.95rem" }}
             >
-              Washington DC's premier TV &amp; Digital Media Production firm — delivering
+              Washington DC's premier TV &amp; digital media production firm — delivering
               creative technical services, cloud solutions, training, and consulting.
+              Operated by one of the best broadcast TDs in the district.
             </motion.p>
 
             {/* CTAs */}
             <motion.div
               initial={{ opacity: 0, y: 16 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.7, delay: 0.5 }}
+              transition={{ duration: 0.7, delay: 0.55 }}
               className="flex flex-col sm:flex-row gap-4 mb-12"
             >
               <a
                 href="#contact"
-                className="px-7 py-3.5 text-xs font-bold transition-opacity hover:opacity-90"
+                className="px-7 py-3.5 text-xs font-bold transition-opacity hover:opacity-90 inline-flex items-center gap-2"
                 style={{
-                  background: "#C9A84C",
-                  color: "#080C10",
+                  background: "#0A84FF",
+                  color: "white",
                   fontFamily: "'JetBrains Mono', monospace",
                   letterSpacing: "0.12em",
                   textTransform: "uppercase",
                 }}
               >
-                Book a Consultation
+                Request a Quote →
               </a>
               <a
-                href="#work"
+                href="#services"
                 className="px-7 py-3.5 text-xs font-bold transition-all duration-200"
                 style={{
-                  border: "1px solid rgba(10,132,255,0.3)",
-                  color: "rgba(10,132,255,0.8)",
+                  border: "1px solid rgba(210,220,230,0.2)",
+                  color: "rgba(210,220,230,0.7)",
                   fontFamily: "'JetBrains Mono', monospace",
                   letterSpacing: "0.12em",
                   textTransform: "uppercase",
+                  background: "rgba(255,255,255,0.03)",
                 }}
                 onMouseEnter={(e) => {
-                  e.currentTarget.style.background = "rgba(10,132,255,0.08)";
-                  e.currentTarget.style.borderColor = "rgba(10,132,255,0.6)";
+                  e.currentTarget.style.borderColor = "rgba(210,220,230,0.5)";
+                  e.currentTarget.style.color = "white";
                 }}
                 onMouseLeave={(e) => {
-                  e.currentTarget.style.background = "transparent";
-                  e.currentTarget.style.borderColor = "rgba(10,132,255,0.3)";
+                  e.currentTarget.style.borderColor = "rgba(210,220,230,0.2)";
+                  e.currentTarget.style.color = "rgba(210,220,230,0.7)";
                 }}
               >
-                View Our Work
+                View Services
               </a>
             </motion.div>
 
@@ -212,7 +189,7 @@ const Hero = () => {
             <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
-              transition={{ duration: 0.7, delay: 0.7 }}
+              transition={{ duration: 0.7, delay: 0.75 }}
               className="flex gap-8 pt-8"
               style={{ borderTop: "1px solid rgba(255,255,255,0.06)" }}
             >
@@ -273,10 +250,7 @@ const Hero = () => {
               animate={{ opacity: 1 }}
               transition={{ delay: 2.8 }}
               className="mt-4 pt-4"
-              style={{
-                borderTop: "1px solid rgba(255,255,255,0.05)",
-                color: "rgba(210,220,230,0.3)",
-              }}
+              style={{ borderTop: "1px solid rgba(255,255,255,0.05)", color: "rgba(210,220,230,0.3)" }}
             >
               $ <span className="cursor" />
             </motion.p>

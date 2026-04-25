@@ -6,6 +6,7 @@ const navLinks = [
   { href: "#work",     label: "Work" },
   { href: "#services", label: "Services" },
   { href: "#about",    label: "About" },
+  { href: "#faq",      label: "FAQ" },
   { href: "#contact",  label: "Contact" },
 ];
 
@@ -23,9 +24,9 @@ const Navbar = () => {
     <nav
       className="fixed top-0 left-0 right-0 z-50 transition-all duration-300"
       style={{
-        background:    scrolled ? "rgba(8,12,16,0.96)"        : "transparent",
-        backdropFilter:scrolled ? "blur(14px)"                : "none",
-        borderBottom:  scrolled ? "1px solid rgba(10,132,255,0.12)" : "none",
+        background:     scrolled ? "rgba(8,12,16,0.96)"             : "transparent",
+        backdropFilter: scrolled ? "blur(14px)"                      : "none",
+        borderBottom:   scrolled ? "1px solid rgba(10,132,255,0.12)" : "none",
       }}
     >
       <div className="max-w-6xl mx-auto px-4 md:px-8">
@@ -40,13 +41,13 @@ const Navbar = () => {
                 animation: "pulseGlow 2.5s ease-in-out infinite",
               }}
             >
-              <div className="w-2 h-2 rotate-0" style={{ background: "#0A84FF" }} />
+              <div className="w-2 h-2" style={{ background: "#0A84FF" }} />
             </div>
             <span
               className="font-bold tracking-[0.22em] uppercase text-sm"
               style={{ fontFamily: "'JetBrains Mono', monospace", color: "white" }}
             >
-              ONIV<span style={{ color: "#C9A84C" }}>INC</span>
+              ONIV<span style={{ color: "#0A84FF" }}>INC</span>
             </span>
           </a>
 
@@ -58,11 +59,11 @@ const Navbar = () => {
                 href={link.href}
                 className="transition-colors duration-200"
                 style={{
-                  fontFamily: "'JetBrains Mono', monospace",
-                  fontSize: "0.7rem",
+                  fontFamily:    "'JetBrains Mono', monospace",
+                  fontSize:      "0.7rem",
                   letterSpacing: "0.18em",
                   textTransform: "uppercase",
-                  color: "rgba(210,220,230,0.5)",
+                  color:         "rgba(210,220,230,0.5)",
                 }}
                 onMouseEnter={(e) => (e.currentTarget.style.color = "white")}
                 onMouseLeave={(e) => (e.currentTarget.style.color = "rgba(210,220,230,0.5)")}
@@ -74,14 +75,14 @@ const Navbar = () => {
               href="#contact"
               className="text-xs font-semibold px-5 py-2.5 transition-opacity hover:opacity-90"
               style={{
-                background: "#C9A84C",
-                color: "#080C10",
-                fontFamily: "'JetBrains Mono', monospace",
+                background:    "#0A84FF",
+                color:         "white",
+                fontFamily:    "'JetBrains Mono', monospace",
                 letterSpacing: "0.12em",
                 textTransform: "uppercase",
               }}
             >
-              Book a Consultation
+              Request a Quote
             </a>
           </div>
 
@@ -111,11 +112,11 @@ const Navbar = () => {
                   href={link.href}
                   className="block py-1 transition-colors"
                   style={{
-                    fontFamily: "'JetBrains Mono', monospace",
-                    fontSize: "0.7rem",
+                    fontFamily:    "'JetBrains Mono', monospace",
+                    fontSize:      "0.7rem",
                     letterSpacing: "0.18em",
                     textTransform: "uppercase",
-                    color: "rgba(210,220,230,0.5)",
+                    color:         "rgba(210,220,230,0.5)",
                   }}
                   onClick={() => setIsOpen(false)}
                 >
@@ -126,15 +127,15 @@ const Navbar = () => {
                 href="#contact"
                 className="block text-center text-xs font-semibold px-5 py-3 mt-2 transition-opacity hover:opacity-90"
                 style={{
-                  background: "#C9A84C",
-                  color: "#080C10",
-                  fontFamily: "'JetBrains Mono', monospace",
+                  background:    "#0A84FF",
+                  color:         "white",
+                  fontFamily:    "'JetBrains Mono', monospace",
                   letterSpacing: "0.12em",
                   textTransform: "uppercase",
                 }}
                 onClick={() => setIsOpen(false)}
               >
-                Book a Consultation
+                Request a Quote
               </a>
             </div>
           </motion.div>
