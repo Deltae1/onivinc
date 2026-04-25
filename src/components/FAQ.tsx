@@ -8,68 +8,87 @@ import {
 
 const faqs = [
   {
-    question: "How long does a typical project take?",
-    answer: "Project timelines vary based on complexity and scope. A simple project might take 2-4 weeks, while larger projects can take 2-3 months. We'll provide a detailed timeline during our initial consultation.",
+    id: "FAQ-01",
+    question: "What types of clients does ONIV work with?",
+    answer:
+      "ONIV primarily serves broadcast and digital media organizations, federal and private sector IT teams, and event producers in the Washington DC metro area. We also take on remote cloud consulting engagements nationwide.",
   },
   {
-    question: "What is your pricing structure?",
-    answer: "We offer competitive pricing tailored to each project's requirements. After understanding your needs, we provide a detailed quote with transparent pricing. No hidden fees – what we quote is what you pay.",
+    id: "FAQ-02",
+    question: "How quickly can you deploy a production crew?",
+    answer:
+      "For DC-area engagements, we can typically deploy a qualified crew within 24–48 hours. Our talent database of 1,000+ media professionals allows rapid sourcing for projects of any scale.",
   },
   {
-    question: "Do you offer ongoing support?",
-    answer: "Absolutely! We offer various support packages including monthly maintenance, updates, and priority support. We're committed to your long-term success, not just project completion.",
+    id: "FAQ-03",
+    question: "Do you hold certifications for Azure work?",
+    answer:
+      "Yes. ONIV's cloud practice is backed by Microsoft Azure certifications. We work across the full Azure stack — compute, storage, networking, and media services.",
   },
   {
-    question: "How do I track my order status?",
-    answer: "Once your project begins, you'll have access to our client portal where you can track progress in real-time, communicate with our team, and view all project milestones.",
+    id: "FAQ-04",
+    question: "What does your training program look like?",
+    answer:
+      "We offer both formal multi-week curricula and single-day intensive workshops. Programs are tailored to your team's current skill level, equipment, and workflow. We've trained 1,000+ professionals across government and private sector organizations.",
   },
   {
-    question: "What if I need revisions?",
-    answer: "We include a reasonable number of revisions in every project. Our goal is your complete satisfaction. We work closely with you throughout the process to minimize extensive revisions.",
+    id: "FAQ-05",
+    question: "Can ONIV handle federal contracting requirements?",
+    answer:
+      "ONIV is structured for federal engagement. We're familiar with federal procurement processes, statement-of-work requirements, and compliance expectations for media and IT contracting.",
   },
   {
-    question: "Can I request a refund?",
-    answer: "We stand behind our work. If you're not satisfied with the initial concepts, we offer a money-back guarantee within the first 7 days. Terms and conditions apply based on project type.",
+    id: "FAQ-06",
+    question: "What's your pricing model?",
+    answer:
+      "Pricing is project-scoped. We provide detailed, transparent quotes with no hidden fees. Submit a quote request and we'll respond within 24 hours with a line-item breakdown tailored to your needs.",
   },
 ];
 
 const FAQ = () => {
   return (
     <section id="faq" className="section-padding bg-background">
-      <div className="container-narrow mx-auto">
+      <div className="container-max mx-auto">
+
+        {/* Header */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6 }}
-          className="text-center mb-12"
+          className="mb-12"
         >
-          <h2 className="font-display text-3xl md:text-5xl font-semibold text-foreground mb-4">
-            Frequently Asked Questions
+          <p className="class-label mb-3">// FAQ — FREQUENTLY ASKED</p>
+          <h2 className="font-display text-3xl md:text-4xl font-semibold text-foreground mb-4">
+            Common <span className="text-primary">Queries</span>
           </h2>
-          <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
-            Find answers to common questions about our services and process.
+          <p className="text-muted-foreground max-w-xl">
+            Direct answers to the questions we hear most. For anything else,
+            open a channel.
           </p>
         </motion.div>
 
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
+          initial={{ opacity: 0, y: 16 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          transition={{ duration: 0.6, delay: 0.2 }}
-          className="max-w-3xl mx-auto"
+          transition={{ duration: 0.6, delay: 0.15 }}
+          className="max-w-3xl"
         >
-          <Accordion type="single" collapsible className="space-y-4">
-            {faqs.map((faq, index) => (
+          <Accordion type="single" collapsible className="space-y-2">
+            {faqs.map((faq) => (
               <AccordionItem
-                key={index}
-                value={`item-${index}`}
-                className="glass-card rounded-lg px-6 border-none"
+                key={faq.id}
+                value={faq.id}
+                className="terminal-card border-border px-5 rounded-sm"
               >
-                <AccordionTrigger className="text-left font-display font-medium text-foreground hover:no-underline py-5">
-                  {faq.question}
+                <AccordionTrigger className="py-4 text-left font-display font-medium text-foreground hover:text-primary hover:no-underline transition-colors text-sm">
+                  <span className="flex items-center gap-3">
+                    <span className="font-mono text-xs text-primary/40 flex-shrink-0">{faq.id}</span>
+                    {faq.question}
+                  </span>
                 </AccordionTrigger>
-                <AccordionContent className="text-muted-foreground pb-5">
+                <AccordionContent className="text-muted-foreground text-sm leading-relaxed pb-4 font-sans">
                   {faq.answer}
                 </AccordionContent>
               </AccordionItem>
