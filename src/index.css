@@ -121,3 +121,15 @@
     @apply bg-card/80 backdrop-blur-sm border border-border shadow-card;
   }
 }
+
+@keyframes marquee {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }
+}
+
+body {
+  background: #0a0a0a;
+  color: #fff;
+  scrollbar-width: thin;
+  scrollbar-color: #C9A84C #111;
+}

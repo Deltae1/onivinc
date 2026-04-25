@@ -1,10 +1,11 @@
 import Navbar from "@/components/Navbar";
 import Hero from "@/components/Hero";
-import Gallery from "@/components/Gallery";
+import ClientLogos from "@/components/ClientLogos";
+import About from "@/components/About";
 import Services from "@/components/Services";
-import QuoteForm from "@/components/QuoteForm";
+import Portfolio from "@/components/Portfolio";
+import Training from "@/components/Training";
 import Contact from "@/components/Contact";
-import FAQ from "@/components/FAQ";
 import Footer from "@/components/Footer";
 
 const Index = () => {
@@ -12,11 +13,12 @@ const Index = () => {
     <main className="min-h-screen">
       <Navbar />
       <Hero />
-      <Gallery />
+      <ClientLogos />
+      <About />
       <Services />
-      <QuoteForm />
+      <Portfolio />
+      <Training />
       <Contact />
-      <FAQ />
       <Footer />
     </main>
   );

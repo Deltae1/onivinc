@@ -1,31 +1,92 @@
 import { motion } from "framer-motion";
-import { Film, Users, GraduationCap, Lightbulb, Cloud, ServerCog } from "lucide-react";
 
 const services = [
-  { icon: Film, title: "Creative Technical Services", description: "Access our 1,000+ strong database of TV and media production talent — from production and design to distribution and logistics. One professional or a full crew, we deliver." },
-  { icon: Cloud, title: "Azure Cloud Solutions", description: "End-to-end Microsoft Azure cloud services — infrastructure provisioning, cloud migrations, cost optimization, and managed cloud environments tailored to your organization." },
-  { icon: ServerCog, title: "General Cloud Consulting", description: "Evaluate your current tech stack and chart a path to the cloud. We assess your workflows, recommend the right tools, and help you modernize at the right pace." },
-  { icon: Lightbulb, title: "Consulting Services", description: "We help TV and media firms evaluate their people, processes and technology — identifying gaps, improving workflows, and unlocking operational efficiency." },
-  { icon: GraduationCap, title: "Training & Tech Support", description: "Formal and informal training sessions for individuals and corporate teams. We've trained over 1,000 media professionals in the past six years." },
-  { icon: Users, title: "Event Coverage", description: "From conferences and corporate events to weddings and anniversaries — our team provides professional photo and video coverage at pocket-friendly rates." },
+  {
+    number: "01",
+    title: "Creative Solutions",
+    description:
+      "From day hires to full crews — production, digital media strategy, documentaries, films, elections, breaking news, sporting events, podcasts, and holiday relief. One professional or a full team, delivered.",
+  },
+  {
+    number: "02",
+    title: "Consulting Expertise",
+    description:
+      "A tight-knit crew that loves what we do, achieving performance-driven results. We evaluate your people, processes, and technology — and provide recommendations that create competitive advantage.",
+  },
+  {
+    number: "03",
+    title: "Expert Teams",
+    description:
+      "Based on your needs, we provide one professional, virtual techs, or a whole team alongside yours — supporting special events, productions, and long-term engagements. We also cover family events: birthdays, weddings, conferences, and graduations.",
+  },
+  {
+    number: "04",
+    title: "Training & Support",
+    description:
+      "Training and technical support are core competencies. We empower media professionals across Audio, Visual, Production, Editing, and Streaming. We also provide rental equipment and production facilities with insurance coverage.",
+  },
 ];
 
 const Services = () => {
   return (
-    <section id="services" className="section-padding bg-muted/50">
-      <div className="container-narrow mx-auto">
-        <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.6 }} className="text-center mb-12">
-          <h2 className="font-display text-3xl md:text-5xl font-semibold text-foreground mb-4">What We Offer</h2>
-          <p className="text-muted-foreground text-lg max-w-2xl mx-auto">From TV production to cloud infrastructure — we bring over 6 years of expertise to every engagement.</p>
+    <section id="services" style={{ background: "#0d0d0d" }} className="py-28 md:py-36">
+      <div className="max-w-6xl mx-auto px-4 md:px-8">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.7 }}
+          className="mb-20"
+        >
+          <p
+            className="text-xs uppercase tracking-[0.35em] mb-4 font-semibold"
+            style={{ color: "#C9A84C" }}
+          >
+            What We Do
+          </p>
+          <h2
+            className="font-bold"
+            style={{ fontSize: "clamp(2rem, 4vw, 3rem)", color: "white" }}
+          >
+            Our Services
+          </h2>
         </motion.div>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {services.map((service, index) => (
-            <motion.div key={service.title} initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.5, delay: index * 0.1 }} className="glass-card p-6 rounded-lg hover:shadow-card-hover transition-shadow duration-300">
-              <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center mb-4">
-                <service.icon className="w-6 h-6 text-primary" />
+
+        <div
+          className="grid md:grid-cols-2 gap-px"
+          style={{ background: "rgba(255,255,255,0.06)" }}
+        >
+          {services.map((s, i) => (
+            <motion.div
+              key={s.number}
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6, delay: i * 0.1 }}
+              className="p-10 transition-colors duration-300"
+              style={{ background: "#0d0d0d" }}
+              onMouseEnter={(e) => (e.currentTarget.style.background = "#111111")}
+              onMouseLeave={(e) => (e.currentTarget.style.background = "#0d0d0d")}
+            >
+              <div
+                className="text-5xl font-bold mb-5 leading-none"
+                style={{ color: "rgba(201,168,76,0.2)" }}
+              >
+                {s.number}
               </div>
-              <h3 className="font-display text-xl font-semibold text-foreground mb-2">{service.title}</h3>
-              <p className="text-muted-foreground">{service.description}</p>
+              <div
+                className="w-8 mb-6"
+                style={{ height: "1px", background: "#C9A84C" }}
+              />
+              <h3 className="text-xl font-bold mb-4" style={{ color: "white" }}>
+                {s.title}
+              </h3>
+              <p
+                className="leading-relaxed text-sm"
+                style={{ color: "rgba(255,255,255,0.5)" }}
+              >
+                {s.description}
+              </p>
             </motion.div>
           ))}
         </div>
@@ -33,4 +94,5 @@ const Services = () => {
     </section>
   );
 };
+
 export default Services;
