@@ -71,11 +71,28 @@ const TickerRow = ({
 }) => {
   const isActive = index === activeIdx;
   const scrambled = useScramble(entry.word, isActive ? trigger : 0);
+  const [fadeIn, setFadeIn] = useState(false);
+
+  useEffect(() => {
+    if (!isActive) return;
+    setFadeIn(false);
+    const t = setTimeout(() => setFadeIn(true), 40);
+    return () => clearTimeout(t);
+  }, [isActive]);
+
+  const opacity   = isActive ? (fadeIn ? 1 : 0)  : 0.14;
+  const translateY = isActive ? (fadeIn ? 0 : 10) : 0;
 
   return (
     <div
       className="flex items-center gap-4"
-      style={{ opacity: isActive ? 1 : 0.14, transition: "opacity 0.6s ease" }}
+      style={{
+        opacity,
+        transform: `translateY(${translateY}px)`,
+        transition: isActive
+          ? "opacity 1s ease, transform 1s ease"
+          : "opacity 0.5s ease",
+      }}
     >
       <span
         style={{
@@ -85,7 +102,7 @@ const TickerRow = ({
           color: isActive ? entry.color : "rgba(255,255,255,0.25)",
           minWidth: "2.4rem",
           userSelect: "none" as const,
-          transition: "color 0.35s ease",
+          transition: "color 0.4s ease",
         }}
       >
         {isActive ? "▶ " : "   "}{String(index + 1).padStart(2, "0")}
@@ -97,7 +114,7 @@ const TickerRow = ({
           letterSpacing: "-0.02em",
           color: isActive ? entry.color : "rgba(255,255,255,0.18)",
           fontFamily: "'Space Grotesk', sans-serif",
-          transition: "color 0.5s ease",
+          transition: "color 0.6s ease",
         }}
       >
         {isActive ? scrambled : entry.word}
