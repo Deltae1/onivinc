@@ -41,13 +41,13 @@ const Navbar = () => {
             transition={{ duration: 0.6, ease: "easeOut" }}
           >
             <div
-              className="w-8 h-8 rotate-45 border flex items-center justify-center transition-all duration-300"
+              className="w-7 h-7 rotate-45 border flex items-center justify-center transition-all duration-300"
               style={{
                 borderColor: "rgba(10,132,255,0.5)",
                 animation: "pulseGlow 2.5s ease-in-out infinite",
               }}
             >
-              <div className="w-3 h-3" style={{ background: "#0A84FF" }} />
+              <div className="w-2.5 h-2.5" style={{ background: "#0A84FF" }} />
             </div>
             <span
               className="font-bold tracking-[0.22em] uppercase"

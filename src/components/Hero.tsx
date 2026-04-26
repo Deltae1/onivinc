@@ -19,16 +19,19 @@ const TICKER_WORDS = [
 ];
 
 const SCRAMBLE_CHARS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789·-_";
-const TICKER_INTERVAL = 3200; // ms per word — slower rotation
+const WORD_DURATION = 5000;  // ms each word holds
+const REST_DURATION = 9000;  // extra pause on last word before looping
 
 function useScramble(target: string, trigger: number) {
   const [display, setDisplay] = useState(target);
   const frameRef = useRef<ReturnType<typeof setInterval> | null>(null);
 
   useEffect(() => {
+    // trigger=0 is the initial/inactive state — show word as-is, no scramble
+    if (trigger === 0) { setDisplay(target); return; }
     let iter = 0;
-    const total = 18;        // more frames = smoother
-    const frameMs = 55;      // slower per frame
+    const total = 18;
+    const frameMs = 55;
     if (frameRef.current) clearInterval(frameRef.current);
     frameRef.current = setInterval(() => {
       setDisplay(
@@ -108,17 +111,28 @@ const Hero = () => {
   const [tickerIdx, setTickerIdx]           = useState(0);
   const [scrambleTrigger, setScrambleTrigger] = useState(0);
 
-  // Ticker rotation — delayed so logo animates in first
+  // Ticker rotation — recursive timeout so last word can breathe longer
   useEffect(() => {
-    const init = setTimeout(() => {
-      setScrambleTrigger((n) => n + 1); // trigger first scramble immediately
-      const id = setInterval(() => {
-        setTickerIdx((i) => (i + 1) % TICKER_WORDS.length);
+    let currentIdx = 0;
+    let timer: ReturnType<typeof setTimeout>;
+
+    const advance = (delay: number) => {
+      timer = setTimeout(() => {
+        currentIdx = (currentIdx + 1) % TICKER_WORDS.length;
+        setTickerIdx(currentIdx);
         setScrambleTrigger((n) => n + 1);
-      }, TICKER_INTERVAL);
-      return () => clearInterval(id);
-    }, 1200); // wait for logo to land
-    return () => clearTimeout(init);
+        const isLast = currentIdx === TICKER_WORDS.length - 1;
+        advance(isLast ? REST_DURATION : WORD_DURATION);
+      }, delay);
+    };
+
+    // Wait for logo to land, trigger first scramble, then begin cycle
+    const init = setTimeout(() => {
+      setScrambleTrigger(1);
+      advance(WORD_DURATION);
+    }, 1400);
+
+    return () => { clearTimeout(init); clearTimeout(timer); };
   }, []);
 
   // Binary rain
