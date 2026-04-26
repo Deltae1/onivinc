@@ -1,4 +1,4 @@
-import { useRef, useEffect } from "react";
+import { useRef, useEffect, useMemo } from "react";
 
 const operations = [
   {
@@ -63,23 +63,40 @@ const operations = [
   },
 ];
 
-// Duplicate for seamless infinite loop
-const ticker = [...operations, ...operations];
+function shuffle<T>(arr: T[]): T[] {
+  const a = [...arr];
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
+}
+
+const CARD_WIDTH = 320;
+const CARD_GAP   = 20;
+const SPEED      = 0.5; // px per frame
 
 const Portfolio = () => {
   const trackRef = useRef<HTMLDivElement>(null);
   const rafRef   = useRef<number>(0);
   const posRef   = useRef<number>(0);
-  const SPEED    = 0.55; // px per frame — adjust for feel
+
+  // Randomize order once per mount, duplicate for seamless loop
+  const ticker = useMemo(() => {
+    const shuffled = shuffle(operations);
+    return [...shuffled, ...shuffled];
+  }, []);
 
   useEffect(() => {
     const track = trackRef.current;
     if (!track) return;
 
+    // Start at a random position within the first half so it never begins at card 1
+    const half = (CARD_WIDTH + CARD_GAP) * (ticker.length / 2);
+    posRef.current = Math.random() * half;
+
     const step = () => {
       posRef.current += SPEED;
-      // Reset when first half scrolled out
-      const half = track.scrollWidth / 2;
       if (posRef.current >= half) posRef.current = 0;
       track.style.transform = `translateX(-${posRef.current}px)`;
       rafRef.current = requestAnimationFrame(step);
@@ -87,7 +104,7 @@ const Portfolio = () => {
 
     rafRef.current = requestAnimationFrame(step);
     return () => cancelAnimationFrame(rafRef.current);
-  }, []);
+  }, [ticker.length]);
 
   return (
     <section id="work" style={{ background: "#080C10", overflow: "hidden" }} className="section-padding">
@@ -108,23 +125,23 @@ const Portfolio = () => {
       <div
         className="relative"
         style={{
-          maskImage: "linear-gradient(to right, transparent 0%, black 8%, black 92%, transparent 100%)",
-          WebkitMaskImage: "linear-gradient(to right, transparent 0%, black 8%, black 92%, transparent 100%)",
+          maskImage: "linear-gradient(to right, transparent 0%, black 6%, black 94%, transparent 100%)",
+          WebkitMaskImage: "linear-gradient(to right, transparent 0%, black 6%, black 94%, transparent 100%)",
         }}
       >
         <div
           ref={trackRef}
-          className="flex gap-5 will-change-transform"
-          style={{ width: "max-content" }}
+          className="flex will-change-transform"
+          style={{ width: "max-content", gap: `${CARD_GAP}px` }}
         >
           {ticker.map((op, i) => (
             <div
               key={`${op.id}-${i}`}
-              className="t-card p-6 flex flex-col flex-shrink-0"
-              style={{ width: "340px" }}
+              className="t-card p-5 flex flex-col flex-shrink-0"
+              style={{ width: `${CARD_WIDTH}px` }}
             >
               {/* Header row */}
-              <div className="flex items-center justify-between mb-4">
+              <div className="flex items-center justify-between mb-3">
                 <div className="flex items-center gap-2">
                   <span className="class-label">{op.id}</span>
                   <span style={{ color: "rgba(10,132,255,0.3)", fontSize: "0.5rem" }}>·</span>
@@ -137,37 +154,37 @@ const Portfolio = () => {
 
               {/* Category */}
               <p
-                className="class-label mb-3"
+                className="class-label mb-2"
                 style={{ color: "rgba(10,132,255,0.65)", letterSpacing: "0.16em" }}
               >
                 {op.category}
               </p>
 
               {/* Amber rule */}
-              <div className="w-6 mb-4" style={{ height: "1px", background: "#C9A84C" }} />
+              <div className="w-5 mb-3" style={{ height: "1px", background: "#C9A84C" }} />
 
               {/* Title + description */}
-              <h3 className="font-semibold text-sm mb-3 leading-snug" style={{ color: "white" }}>
+              <h3 className="font-semibold text-sm mb-2 leading-snug" style={{ color: "white" }}>
                 {op.title}
               </h3>
               <p
-                className="text-xs leading-relaxed mb-5 flex-1"
-                style={{ color: "rgba(210,220,230,0.4)" }}
+                className="text-xs leading-relaxed mb-4 flex-1"
+                style={{ color: "rgba(210,220,230,0.4)", fontSize: "0.72rem" }}
               >
                 {op.description}
               </p>
 
               {/* Tags */}
-              <div className="flex flex-wrap gap-2 mb-5">
+              <div className="flex flex-wrap gap-1.5 mb-4">
                 {op.tags.map((tag) => (
                   <span
                     key={tag}
-                    className="text-xs px-2 py-0.5"
+                    className="px-2 py-0.5"
                     style={{
                       border: "1px solid rgba(10,132,255,0.18)",
                       color: "rgba(210,220,230,0.4)",
                       fontFamily: "'JetBrains Mono', monospace",
-                      fontSize: "0.58rem",
+                      fontSize: "0.55rem",
                       letterSpacing: "0.08em",
                     }}
                   >
@@ -178,7 +195,7 @@ const Portfolio = () => {
 
               {/* Status */}
               <div
-                className="flex items-center gap-2 pt-4"
+                className="flex items-center gap-2 pt-3"
                 style={{ borderTop: "1px solid rgba(255,255,255,0.05)" }}
               >
                 <div className="w-1.5 h-1.5 rounded-full" style={{ background: "#00FF9C" }} />
