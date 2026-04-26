@@ -19,7 +19,7 @@ const TICKER_WORDS = [
 ];
 
 const SCRAMBLE_CHARS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789·-_";
-const TICKER_INTERVAL = 2400;
+const TICKER_INTERVAL = 3200; // ms per word — slower rotation
 
 function useScramble(target: string, trigger: number) {
   const [display, setDisplay] = useState(target);
@@ -27,7 +27,8 @@ function useScramble(target: string, trigger: number) {
 
   useEffect(() => {
     let iter = 0;
-    const total = 12;
+    const total = 18;        // more frames = smoother
+    const frameMs = 55;      // slower per frame
     if (frameRef.current) clearInterval(frameRef.current);
     frameRef.current = setInterval(() => {
       setDisplay(
@@ -45,7 +46,7 @@ function useScramble(target: string, trigger: number) {
         setDisplay(target);
         if (frameRef.current) clearInterval(frameRef.current);
       }
-    }, 35);
+    }, frameMs);
     return () => { if (frameRef.current) clearInterval(frameRef.current); };
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [trigger]);
@@ -71,7 +72,7 @@ const TickerRow = ({
   return (
     <div
       className="flex items-center gap-4"
-      style={{ opacity: isActive ? 1 : 0.14, transition: "opacity 0.35s ease" }}
+      style={{ opacity: isActive ? 1 : 0.14, transition: "opacity 0.6s ease" }}
     >
       <span
         style={{
@@ -89,11 +90,11 @@ const TickerRow = ({
       <span
         className="font-bold leading-none"
         style={{
-          fontSize: "clamp(2.6rem, 5.5vw, 4.8rem)",
+          fontSize: "clamp(2rem, 4.2vw, 3.8rem)",
           letterSpacing: "-0.02em",
           color: isActive ? entry.color : "rgba(255,255,255,0.18)",
           fontFamily: "'Space Grotesk', sans-serif",
-          transition: "color 0.35s ease",
+          transition: "color 0.5s ease",
         }}
       >
         {isActive ? scrambled : entry.word}
@@ -107,13 +108,17 @@ const Hero = () => {
   const [tickerIdx, setTickerIdx]           = useState(0);
   const [scrambleTrigger, setScrambleTrigger] = useState(0);
 
-  // Ticker rotation
+  // Ticker rotation — delayed so logo animates in first
   useEffect(() => {
-    const id = setInterval(() => {
-      setTickerIdx((i) => (i + 1) % TICKER_WORDS.length);
-      setScrambleTrigger((n) => n + 1);
-    }, TICKER_INTERVAL);
-    return () => clearInterval(id);
+    const init = setTimeout(() => {
+      setScrambleTrigger((n) => n + 1); // trigger first scramble immediately
+      const id = setInterval(() => {
+        setTickerIdx((i) => (i + 1) % TICKER_WORDS.length);
+        setScrambleTrigger((n) => n + 1);
+      }, TICKER_INTERVAL);
+      return () => clearInterval(id);
+    }, 1200); // wait for logo to land
+    return () => clearTimeout(init);
   }, []);
 
   // Binary rain

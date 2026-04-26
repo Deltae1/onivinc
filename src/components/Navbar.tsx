@@ -33,23 +33,29 @@ const Navbar = () => {
         <div className="flex items-center justify-between h-16 md:h-20">
 
           {/* Logo */}
-          <a href="#" className="flex items-center gap-3 group">
+          <motion.a
+            href="#"
+            className="flex items-center gap-3 group"
+            initial={{ opacity: 0, y: -10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, ease: "easeOut" }}
+          >
             <div
-              className="w-6 h-6 rotate-45 border flex items-center justify-center transition-all duration-300"
+              className="w-8 h-8 rotate-45 border flex items-center justify-center transition-all duration-300"
               style={{
                 borderColor: "rgba(10,132,255,0.5)",
                 animation: "pulseGlow 2.5s ease-in-out infinite",
               }}
             >
-              <div className="w-2 h-2" style={{ background: "#0A84FF" }} />
+              <div className="w-3 h-3" style={{ background: "#0A84FF" }} />
             </div>
             <span
-              className="font-bold tracking-[0.22em] uppercase text-sm"
-              style={{ fontFamily: "'JetBrains Mono', monospace", color: "white" }}
+              className="font-bold tracking-[0.22em] uppercase"
+              style={{ fontFamily: "'JetBrains Mono', monospace", color: "white", fontSize: "1rem" }}
             >
               ONIV<span style={{ color: "#0A84FF" }}>INC</span>
             </span>
-          </a>
+          </motion.a>
 
           {/* Desktop nav */}
           <div className="hidden md:flex items-center gap-9">
