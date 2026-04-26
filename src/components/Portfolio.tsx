@@ -1,4 +1,4 @@
-import { motion } from "framer-motion";
+import { useRef, useEffect } from "react";
 
 const operations = [
   {
@@ -63,38 +63,65 @@ const operations = [
   },
 ];
 
-const Portfolio = () => {
-  return (
-    <section id="work" style={{ background: "#080C10" }} className="section-padding">
-      <div className="container-max">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.7 }}
-          className="mb-20"
-        >
-          <p className="class-label mb-4">// OPS — FIELD RECORD</p>
-          <h2
-            className="font-bold mb-4"
-            style={{ fontSize: "clamp(2rem, 4vw, 3rem)", color: "white" }}
-          >
-            Selected <span style={{ color: "#0A84FF" }}>Operations</span>
-          </h2>
-          <p className="text-sm max-w-lg" style={{ color: "rgba(210,220,230,0.4)" }}>
-            A representative sample of engagements. Detailed case studies available on request.
-          </p>
-        </motion.div>
+// Duplicate for seamless infinite loop
+const ticker = [...operations, ...operations];
 
-        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
-          {operations.map((op, i) => (
-            <motion.div
-              key={op.id}
-              initial={{ opacity: 0, y: 24 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.55, delay: i * 0.08 }}
-              className="t-card p-6 flex flex-col"
+const Portfolio = () => {
+  const trackRef = useRef<HTMLDivElement>(null);
+  const rafRef   = useRef<number>(0);
+  const posRef   = useRef<number>(0);
+  const SPEED    = 0.55; // px per frame — adjust for feel
+
+  useEffect(() => {
+    const track = trackRef.current;
+    if (!track) return;
+
+    const step = () => {
+      posRef.current += SPEED;
+      // Reset when first half scrolled out
+      const half = track.scrollWidth / 2;
+      if (posRef.current >= half) posRef.current = 0;
+      track.style.transform = `translateX(-${posRef.current}px)`;
+      rafRef.current = requestAnimationFrame(step);
+    };
+
+    rafRef.current = requestAnimationFrame(step);
+    return () => cancelAnimationFrame(rafRef.current);
+  }, []);
+
+  return (
+    <section id="work" style={{ background: "#080C10", overflow: "hidden" }} className="section-padding">
+      <div className="container-max mb-16">
+        <p className="class-label mb-4">// OPS — FIELD RECORD</p>
+        <h2
+          className="font-bold mb-4"
+          style={{ fontSize: "clamp(2rem, 4vw, 3rem)", color: "white" }}
+        >
+          Selected <span style={{ color: "#0A84FF" }}>Operations</span>
+        </h2>
+        <p className="text-sm max-w-lg" style={{ color: "rgba(210,220,230,0.4)" }}>
+          A representative sample of engagements. Detailed case studies available on request.
+        </p>
+      </div>
+
+      {/* Ticker track — edge fade masks */}
+      <div
+        className="relative"
+        style={{
+          maskImage: "linear-gradient(to right, transparent 0%, black 8%, black 92%, transparent 100%)",
+          WebkitMaskImage: "linear-gradient(to right, transparent 0%, black 8%, black 92%, transparent 100%)",
+        }}
+      >
+        <div
+          ref={trackRef}
+          className="flex gap-5 will-change-transform"
+          style={{ width: "max-content" }}
+        >
+          {ticker.map((op, i) => (
+            <div
+              key={`${op.id}-${i}`}
+              className="t-card p-6 flex flex-col flex-shrink-0"
+              style={{ width: "340px" }}
             >
               {/* Header row */}
               <div className="flex items-center justify-between mb-4">
@@ -103,10 +130,7 @@ const Portfolio = () => {
                   <span style={{ color: "rgba(10,132,255,0.3)", fontSize: "0.5rem" }}>·</span>
                   <span className="class-label" style={{ color: "rgba(10,132,255,0.8)" }}>{op.code}</span>
                 </div>
-                <span
-                  className="class-label"
-                  style={{ color: "rgba(201,168,76,0.6)" }}
-                >
+                <span className="class-label" style={{ color: "rgba(201,168,76,0.6)" }}>
                   {op.year}
                 </span>
               </div>
@@ -133,7 +157,7 @@ const Portfolio = () => {
                 {op.description}
               </p>
 
-              {/* Skill tags */}
+              {/* Tags */}
               <div className="flex flex-wrap gap-2 mb-5">
                 {op.tags.map((tag) => (
                   <span
@@ -153,19 +177,16 @@ const Portfolio = () => {
               </div>
 
               {/* Status */}
-              <div className="flex items-center gap-2 pt-4" style={{ borderTop: "1px solid rgba(255,255,255,0.05)" }}>
-                <div
-                  className="w-1.5 h-1.5 rounded-full"
-                  style={{ background: "#00FF9C" }}
-                />
-                <span
-                  className="class-label"
-                  style={{ color: "rgba(0,255,156,0.7)" }}
-                >
+              <div
+                className="flex items-center gap-2 pt-4"
+                style={{ borderTop: "1px solid rgba(255,255,255,0.05)" }}
+              >
+                <div className="w-1.5 h-1.5 rounded-full" style={{ background: "#00FF9C" }} />
+                <span className="class-label" style={{ color: "rgba(0,255,156,0.7)" }}>
                   COMPLETED
                 </span>
               </div>
-            </motion.div>
+            </div>
           ))}
         </div>
       </div>
