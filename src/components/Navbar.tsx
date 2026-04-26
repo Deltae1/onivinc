@@ -88,7 +88,7 @@ const Navbar = () => {
                 textTransform: "uppercase",
               }}
             >
-              Request a Quote
+              Submit a Request
             </a>
           </div>
 
@@ -141,7 +141,7 @@ const Navbar = () => {
                 }}
                 onClick={() => setIsOpen(false)}
               >
-                Request a Quote
+                Submit a Request
               </a>
             </div>
           </motion.div>

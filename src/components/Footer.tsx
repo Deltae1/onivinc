@@ -1,4 +1,4 @@
-import { Mail } from "lucide-react";
+import { Mail, MapPin, Phone } from "lucide-react";
 
 const serviceLinks = [
   "Creative Technical Services",
@@ -40,7 +40,7 @@ const Footer = () => {
               Washington DC's premier TV &amp; Digital Media Production firm. Innovative.
               Modern. Budget-Friendly. Established 2017.
             </p>
-            <div className="flex items-center gap-3">
+            <div className="flex items-center gap-3 mb-5">
               {socials.map(({ icon: Icon, href, label }) => (
                 <a
                   key={label}
@@ -61,6 +61,19 @@ const Footer = () => {
                   <Icon className="w-3.5 h-3.5" />
                 </a>
               ))}
+            </div>
+            <div className="space-y-2">
+              <div className="flex items-start gap-2" style={{ color: "rgba(210,220,230,0.35)" }}>
+                <MapPin className="w-3.5 h-3.5 mt-0.5 shrink-0" style={{ color: "#0A84FF" }} />
+                <span className="text-xs leading-relaxed">2001 L St NW, Suite 500<br />Washington, DC</span>
+              </div>
+              <div className="flex items-center gap-2" style={{ color: "rgba(210,220,230,0.35)" }}>
+                <Phone className="w-3.5 h-3.5 shrink-0" style={{ color: "#0A84FF" }} />
+                <a href="tel:+12027435659" className="text-xs transition-colors duration-200"
+                  onMouseEnter={(e) => (e.currentTarget.style.color = "white")}
+                  onMouseLeave={(e) => (e.currentTarget.style.color = "rgba(210,220,230,0.35)")}
+                >(202) 743-5659</a>
+              </div>
             </div>
           </div>
 
@@ -121,7 +134,7 @@ const Footer = () => {
                 textTransform: "uppercase",
               }}
             >
-              Request a Quote
+              Submit a Request
             </a>
           </div>
         </div>

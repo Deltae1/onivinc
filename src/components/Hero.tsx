@@ -18,139 +18,86 @@ const TICKER_WORDS = [
   { word: "Budget-Friendly.", color: "#C9A84C" },
 ];
 
-const SCRAMBLE_CHARS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789·-_";
-const WORD_DURATION = 5000;  // ms each word holds
-const REST_DURATION = 9000;  // extra pause on last word before looping
+const CHAR_DELAY = 90;   // ms per character
+const WORD_PAUSE = 450;  // ms pause between words
 
-function useScramble(target: string, trigger: number) {
-  const [display, setDisplay] = useState(target);
-  const frameRef = useRef<ReturnType<typeof setInterval> | null>(null);
+const TypewriterWords = () => {
+  const [revealed, setRevealed] = useState([0, 0, 0]);
+  const [activeWord, setActiveWord] = useState(-1);
+  const [done, setDone] = useState(false);
 
   useEffect(() => {
-    // trigger=0 is the initial/inactive state — show word as-is, no scramble
-    if (trigger === 0) { setDisplay(target); return; }
-    let iter = 0;
-    const total = 18;
-    const frameMs = 55;
-    if (frameRef.current) clearInterval(frameRef.current);
-    frameRef.current = setInterval(() => {
-      setDisplay(
-        target
-          .split("")
-          .map((char, i) => {
-            if (char === " " || char === "-") return char;
-            if (i < Math.floor((iter / total) * target.length)) return char;
-            return SCRAMBLE_CHARS[Math.floor(Math.random() * SCRAMBLE_CHARS.length)];
-          })
-          .join("")
-      );
-      iter++;
-      if (iter > total) {
-        setDisplay(target);
-        if (frameRef.current) clearInterval(frameRef.current);
+    let wordIdx = 0;
+    let charIdx = 0;
+    let timer: ReturnType<typeof setTimeout>;
+
+    const typeNext = () => {
+      const word = TICKER_WORDS[wordIdx].word;
+      if (charIdx < word.length) {
+        charIdx++;
+        const wi = wordIdx;
+        setRevealed(prev => { const n = [...prev]; n[wi] = charIdx; return n; });
+        timer = setTimeout(typeNext, CHAR_DELAY);
+      } else if (wordIdx < TICKER_WORDS.length - 1) {
+        timer = setTimeout(() => {
+          wordIdx++;
+          charIdx = 0;
+          setActiveWord(wordIdx);
+          typeNext();
+        }, WORD_PAUSE);
+      } else {
+        setDone(true);
       }
-    }, frameMs);
-    return () => { if (frameRef.current) clearInterval(frameRef.current); };
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [trigger]);
+    };
 
-  return display;
-}
-
-// Individual ticker row — each calls useScramble at top level
-const TickerRow = ({
-  entry,
-  index,
-  activeIdx,
-  trigger,
-}: {
-  entry: typeof TICKER_WORDS[0];
-  index: number;
-  activeIdx: number;
-  trigger: number;
-}) => {
-  const isActive = index === activeIdx;
-  const scrambled = useScramble(entry.word, isActive ? trigger : 0);
-  const [fadeIn, setFadeIn] = useState(false);
-
-  useEffect(() => {
-    if (!isActive) return;
-    setFadeIn(false);
-    const t = setTimeout(() => setFadeIn(true), 40);
-    return () => clearTimeout(t);
-  }, [isActive]);
-
-  const opacity   = isActive ? (fadeIn ? 1 : 0)  : 0.14;
-  const translateY = isActive ? (fadeIn ? 0 : 10) : 0;
+    setActiveWord(0);
+    timer = setTimeout(typeNext, 800);
+    return () => clearTimeout(timer);
+  }, []);
 
   return (
-    <div
-      className="flex items-center gap-4"
-      style={{
-        opacity,
-        transform: `translateY(${translateY}px)`,
-        transition: isActive
-          ? "opacity 1s ease, transform 1s ease"
-          : "opacity 0.5s ease",
-      }}
-    >
-      <span
-        style={{
-          fontFamily: "'JetBrains Mono', monospace",
-          fontSize: "0.52rem",
-          letterSpacing: "0.18em",
-          color: isActive ? entry.color : "rgba(255,255,255,0.25)",
-          minWidth: "2.4rem",
-          userSelect: "none" as const,
-          transition: "color 0.4s ease",
-        }}
-      >
-        {isActive ? "▶ " : "   "}{String(index + 1).padStart(2, "0")}
-      </span>
-      <span
-        className="font-bold leading-none"
-        style={{
-          fontSize: "clamp(2rem, 4.2vw, 3.8rem)",
-          letterSpacing: "-0.02em",
-          color: isActive ? entry.color : "rgba(255,255,255,0.18)",
-          fontFamily: "'Space Grotesk', sans-serif",
-          transition: "color 0.6s ease",
-        }}
-      >
-        {isActive ? scrambled : entry.word}
-      </span>
+    <div className="flex flex-col gap-2 mb-6">
+      {TICKER_WORDS.map((entry, i) => {
+        const chars      = revealed[i];
+        const hasStarted = chars > 0;
+        const isActive   = i === activeWord;
+        const isFinished = chars === entry.word.length;
+        const visible    = entry.word.slice(0, chars);
+        const hidden     = entry.word.slice(chars);
+
+        return (
+          <div key={entry.word} className="flex items-center gap-4">
+            <span style={{
+              fontFamily: "'JetBrains Mono', monospace",
+              fontSize: "0.52rem",
+              letterSpacing: "0.18em",
+              color: hasStarted ? entry.color : "rgba(255,255,255,0.25)",
+              minWidth: "2.4rem",
+              userSelect: "none" as const,
+              transition: "color 0.3s ease",
+            }}>
+              {hasStarted ? "▶ " : "   "}{String(i + 1).padStart(2, "0")}
+            </span>
+            <span className="font-bold leading-none" style={{
+              fontSize: "clamp(2rem, 4.2vw, 3.8rem)",
+              letterSpacing: "-0.02em",
+              fontFamily: "'Space Grotesk', sans-serif",
+            }}>
+              <span style={{ color: entry.color }}>{visible}</span>
+              {isActive && !isFinished && !done && (
+                <span style={{ color: entry.color }}>|</span>
+              )}
+              <span style={{ color: "transparent" }}>{hidden}</span>
+            </span>
+          </div>
+        );
+      })}
     </div>
   );
 };
 
 const Hero = () => {
-  const canvasRef         = useRef<HTMLCanvasElement>(null);
-  const [tickerIdx, setTickerIdx]           = useState(0);
-  const [scrambleTrigger, setScrambleTrigger] = useState(0);
-
-  // Ticker rotation — recursive timeout so last word can breathe longer
-  useEffect(() => {
-    let currentIdx = 0;
-    let timer: ReturnType<typeof setTimeout>;
-
-    const advance = (delay: number) => {
-      timer = setTimeout(() => {
-        currentIdx = (currentIdx + 1) % TICKER_WORDS.length;
-        setTickerIdx(currentIdx);
-        setScrambleTrigger((n) => n + 1);
-        const isLast = currentIdx === TICKER_WORDS.length - 1;
-        advance(isLast ? REST_DURATION : WORD_DURATION);
-      }, delay);
-    };
-
-    // Wait for logo to land, trigger first scramble, then begin cycle
-    const init = setTimeout(() => {
-      setScrambleTrigger(1);
-      advance(WORD_DURATION);
-    }, 1400);
-
-    return () => { clearTimeout(init); clearTimeout(timer); };
-  }, []);
+  const canvasRef = useRef<HTMLCanvasElement>(null);
 
   // Binary rain
   useEffect(() => {
@@ -262,17 +209,7 @@ const Hero = () => {
               >
                 // BROADCAST SIGNAL · ONIV-INC
               </p>
-              <div className="flex flex-col gap-2 mb-6">
-                {TICKER_WORDS.map((entry, i) => (
-                  <TickerRow
-                    key={entry.word}
-                    entry={entry}
-                    index={i}
-                    activeIdx={tickerIdx}
-                    trigger={scrambleTrigger}
-                  />
-                ))}
-              </div>
+              <TypewriterWords />
             </motion.div>
 
             {/* MOBILE: static stacked */}
