@@ -108,9 +108,9 @@ const Contact = () => {
                 icon: Mail,
                 tag:  "COMM-01",
                 label: "Email",
-                value: "hello@onivinc.com",
+                value: "info@onivinc.com",
                 sub:  "Primary channel — 24hr response",
-                href: "mailto:hello@onivinc.com",
+                href: "mailto:info@onivinc.com",
               },
               {
                 icon: MapPin,

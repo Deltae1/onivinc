@@ -11,7 +11,7 @@ const serviceLinks = [
 const navLinks = ["Services", "Work", "About", "FAQ", "Contact"];
 
 const socials = [
-  { icon: Mail, href: "mailto:hello@onivinc.com", label: "Email" },
+  { icon: Mail, href: "mailto:info@onivinc.com", label: "Email" },
 ];
 
 const Footer = () => {
