@@ -1,4 +1,4 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { motion } from "framer-motion";
 import { Shield } from "lucide-react";
 import heroBg from "@/assets/reference/broadcast-studio.jpg";
@@ -12,9 +12,111 @@ const BOOT_LINES = [
   { text: "session authenticated — access granted.",  delay: 2.0 },
 ];
 
-const Hero = () => {
-  const canvasRef = useRef<HTMLCanvasElement>(null);
+const TICKER_WORDS = [
+  { word: "Innovative.",      color: "#FFFFFF" },
+  { word: "Modern.",          color: "#0A84FF" },
+  { word: "Budget-Friendly.", color: "#C9A84C" },
+];
 
+const SCRAMBLE_CHARS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789·-_";
+const TICKER_INTERVAL = 2400;
+
+function useScramble(target: string, trigger: number) {
+  const [display, setDisplay] = useState(target);
+  const frameRef = useRef<ReturnType<typeof setInterval> | null>(null);
+
+  useEffect(() => {
+    let iter = 0;
+    const total = 12;
+    if (frameRef.current) clearInterval(frameRef.current);
+    frameRef.current = setInterval(() => {
+      setDisplay(
+        target
+          .split("")
+          .map((char, i) => {
+            if (char === " " || char === "-") return char;
+            if (i < Math.floor((iter / total) * target.length)) return char;
+            return SCRAMBLE_CHARS[Math.floor(Math.random() * SCRAMBLE_CHARS.length)];
+          })
+          .join("")
+      );
+      iter++;
+      if (iter > total) {
+        setDisplay(target);
+        if (frameRef.current) clearInterval(frameRef.current);
+      }
+    }, 35);
+    return () => { if (frameRef.current) clearInterval(frameRef.current); };
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [trigger]);
+
+  return display;
+}
+
+// Individual ticker row — each calls useScramble at top level
+const TickerRow = ({
+  entry,
+  index,
+  activeIdx,
+  trigger,
+}: {
+  entry: typeof TICKER_WORDS[0];
+  index: number;
+  activeIdx: number;
+  trigger: number;
+}) => {
+  const isActive = index === activeIdx;
+  const scrambled = useScramble(entry.word, isActive ? trigger : 0);
+
+  return (
+    <div
+      className="flex items-center gap-4"
+      style={{ opacity: isActive ? 1 : 0.14, transition: "opacity 0.35s ease" }}
+    >
+      <span
+        style={{
+          fontFamily: "'JetBrains Mono', monospace",
+          fontSize: "0.52rem",
+          letterSpacing: "0.18em",
+          color: isActive ? entry.color : "rgba(255,255,255,0.25)",
+          minWidth: "2.4rem",
+          userSelect: "none" as const,
+          transition: "color 0.35s ease",
+        }}
+      >
+        {isActive ? "▶ " : "   "}{String(index + 1).padStart(2, "0")}
+      </span>
+      <span
+        className="font-bold leading-none"
+        style={{
+          fontSize: "clamp(2.6rem, 5.5vw, 4.8rem)",
+          letterSpacing: "-0.02em",
+          color: isActive ? entry.color : "rgba(255,255,255,0.18)",
+          fontFamily: "'Space Grotesk', sans-serif",
+          transition: "color 0.35s ease",
+        }}
+      >
+        {isActive ? scrambled : entry.word}
+      </span>
+    </div>
+  );
+};
+
+const Hero = () => {
+  const canvasRef         = useRef<HTMLCanvasElement>(null);
+  const [tickerIdx, setTickerIdx]           = useState(0);
+  const [scrambleTrigger, setScrambleTrigger] = useState(0);
+
+  // Ticker rotation
+  useEffect(() => {
+    const id = setInterval(() => {
+      setTickerIdx((i) => (i + 1) % TICKER_WORDS.length);
+      setScrambleTrigger((n) => n + 1);
+    }, TICKER_INTERVAL);
+    return () => clearInterval(id);
+  }, []);
+
+  // Binary rain
   useEffect(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
@@ -71,7 +173,7 @@ const Hero = () => {
   return (
     <section className="relative min-h-screen flex items-center overflow-hidden">
 
-      {/* Broadcast photo */}
+      {/* Background photo */}
       <div className="absolute inset-0">
         <img src={heroBg} alt="Broadcast studio" className="w-full h-full object-cover" />
         <div
@@ -83,24 +185,24 @@ const Hero = () => {
         />
       </div>
 
-      {/* Binary rain canvas */}
+      {/* Binary rain */}
       <canvas
         ref={canvasRef}
         className="absolute inset-0 w-full h-full"
         style={{ opacity: 0.45, mixBlendMode: "screen" }}
       />
 
-      <div className="relative z-10 max-w-6xl mx-auto px-4 md:px-8 py-32 w-full">
+      <div className="relative z-10 max-w-6xl mx-auto px-4 md:px-8 py-24 w-full">
         <div className="grid lg:grid-cols-2 gap-16 items-center">
 
           {/* LEFT */}
           <div>
-            {/* Classification badge */}
+            {/* Badge */}
             <motion.div
               initial={{ opacity: 0, x: -20 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.5 }}
-              className="inline-flex items-center gap-3 mb-10 px-3 py-1.5"
+              className="inline-flex items-center gap-3 mb-8 px-3 py-1.5"
               style={{
                 border: "1px solid rgba(10,132,255,0.25)",
                 background: "rgba(10,132,255,0.06)",
@@ -111,15 +213,42 @@ const Hero = () => {
               <span className="cursor" />
             </motion.div>
 
-            {/* Stacked headline */}
+            {/* DESKTOP: stock ticker board */}
             <motion.div
               initial={{ opacity: 0, y: 24 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 0.15 }}
+              className="hidden lg:block"
+            >
+              <p
+                className="class-label mb-5"
+                style={{ color: "rgba(10,132,255,0.38)", letterSpacing: "0.25em" }}
+              >
+                // BROADCAST SIGNAL · ONIV-INC
+              </p>
+              <div className="flex flex-col gap-2 mb-6">
+                {TICKER_WORDS.map((entry, i) => (
+                  <TickerRow
+                    key={entry.word}
+                    entry={entry}
+                    index={i}
+                    activeIdx={tickerIdx}
+                    trigger={scrambleTrigger}
+                  />
+                ))}
+              </div>
+            </motion.div>
+
+            {/* MOBILE: static stacked */}
+            <motion.div
+              initial={{ opacity: 0, y: 24 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, delay: 0.15 }}
+              className="lg:hidden mb-6"
             >
               <h1
-                className="font-bold leading-none"
-                style={{ fontSize: "clamp(3rem, 7.5vw, 6rem)", letterSpacing: "-0.02em" }}
+                className="font-bold leading-tight"
+                style={{ fontSize: "clamp(2.4rem, 10vw, 3.8rem)", letterSpacing: "-0.02em" }}
               >
                 <span style={{ color: "white" }}>Innovative.</span>
                 <br />
@@ -129,12 +258,13 @@ const Hero = () => {
               </h1>
             </motion.div>
 
+            {/* Description */}
             <motion.p
               initial={{ opacity: 0, y: 16 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.7, delay: 0.4 }}
-              className="leading-relaxed mt-8 mb-10 max-w-lg"
-              style={{ color: "rgba(210,220,230,0.5)", fontSize: "0.95rem" }}
+              className="leading-relaxed mb-8 max-w-md"
+              style={{ color: "rgba(210,220,230,0.5)", fontSize: "0.9rem" }}
             >
               Washington DC's premier TV &amp; digital media production firm — delivering
               creative technical services, cloud solutions, training, and consulting.
@@ -146,7 +276,7 @@ const Hero = () => {
               initial={{ opacity: 0, y: 16 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.7, delay: 0.55 }}
-              className="flex flex-col sm:flex-row gap-4 mb-12"
+              className="flex flex-col sm:flex-row gap-4 mb-10"
             >
               <a
                 href="#contact"
@@ -172,25 +302,17 @@ const Hero = () => {
                   textTransform: "uppercase",
                   background: "rgba(255,255,255,0.03)",
                 }}
-                onMouseEnter={(e) => {
-                  e.currentTarget.style.borderColor = "rgba(210,220,230,0.5)";
-                  e.currentTarget.style.color = "white";
-                }}
-                onMouseLeave={(e) => {
-                  e.currentTarget.style.borderColor = "rgba(210,220,230,0.2)";
-                  e.currentTarget.style.color = "rgba(210,220,230,0.7)";
-                }}
               >
                 View Services
               </a>
             </motion.div>
 
-            {/* Stat strip */}
+            {/* Stats */}
             <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ duration: 0.7, delay: 0.75 }}
-              className="flex gap-8 pt-8"
+              className="flex gap-8 pt-6"
               style={{ borderTop: "1px solid rgba(255,255,255,0.06)" }}
             >
               {[
