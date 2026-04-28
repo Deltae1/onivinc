@@ -10,46 +10,70 @@ const clients = [
   "Diversity Education Institute",
 ];
 
-const LogoItem = ({ name }: { name: string }) => (
-  <div className="flex-shrink-0 flex items-center justify-center px-10" style={{ minWidth: "230px" }}>
-    <span className="redact text-xs font-semibold uppercase tracking-[0.18em]">{name}</span>
-  </div>
-);
-
 const ClientLogos = () => {
   const doubled = [...clients, ...clients];
 
   return (
     <section
-      className="py-14 overflow-hidden"
       style={{
-        background: "#080C10",
-        borderTop:    "1px solid rgba(10,132,255,0.08)",
-        borderBottom: "1px solid rgba(10,132,255,0.08)",
+        background:   "rgba(10,132,255,0.04)",
+        borderTop:    "1px solid rgba(10,132,255,0.25)",
+        borderBottom: "1px solid rgba(10,132,255,0.12)",
+        overflow:     "hidden",
+        padding:      "0",
       }}
     >
-      <p
-        className="text-center mb-8 class-label"
-        style={{ color: "rgba(201,168,76,0.55)" }}
-      >
-        // VERIFIED OPERATORS — TRUSTED BY
-      </p>
-      <div className="overflow-hidden">
+      <div style={{ display: "flex", alignItems: "stretch", height: "40px" }}>
+
+        {/* Pinned label */}
         <div
-          className="flex"
-          style={{ animation: "marquee 32s linear infinite", width: "max-content" }}
+          style={{
+            display: "flex", alignItems: "center", gap: "10px",
+            padding: "0 20px", flexShrink: 0,
+            borderRight: "1px solid rgba(10,132,255,0.15)",
+          }}
         >
-          {doubled.map((name, i) => (
-            <LogoItem key={`${name}-${i}`} name={name} />
-          ))}
+          <span style={{
+            fontFamily: "'JetBrains Mono', monospace",
+            fontSize: "0.58rem", fontWeight: 600,
+            letterSpacing: "0.2em", textTransform: "uppercase",
+            color: "rgba(201,168,76,0.7)", whiteSpace: "nowrap",
+          }}>
+            // VERIFIED OPERATORS
+          </span>
+          <div style={{ width: 6, height: 6, borderRadius: "50%", background: "rgba(0,255,156,0.6)", flexShrink: 0 }} />
         </div>
+
+        {/* Scrolling area */}
+        <div style={{ overflow: "hidden", flex: 1, position: "relative" }}>
+          <div style={{
+            position: "absolute", right: 0, top: 0, bottom: 0, width: 60,
+            background: "linear-gradient(to left, rgba(8,12,20,1), transparent)",
+            zIndex: 2, pointerEvents: "none",
+          }} />
+          <div style={{
+            display: "flex", alignItems: "center", height: "100%",
+            animation: "marquee 36s linear infinite",
+            width: "max-content",
+          }}>
+            {doubled.map((name, i) => (
+              <div key={`${name}-${i}`} style={{ display: "flex", alignItems: "center", flexShrink: 0 }}>
+                <span style={{
+                  fontFamily: "'JetBrains Mono', monospace",
+                  fontSize: "0.6rem", fontWeight: 600,
+                  letterSpacing: "0.16em", textTransform: "uppercase",
+                  color: "#C9A84C", whiteSpace: "nowrap",
+                  padding: "1px 6px",
+                }}>
+                  {name}
+                </span>
+                <span style={{ color: "rgba(10,132,255,0.3)", margin: "0 16px", fontSize: "0.5rem" }}>·</span>
+              </div>
+            ))}
+          </div>
+        </div>
+
       </div>
-      <p
-        className="text-center mt-5 class-label"
-        style={{ color: "rgba(10,132,255,0.3)" }}
-      >
-        hover to reveal
-      </p>
     </section>
   );
 };
