@@ -154,7 +154,7 @@ const Hero = () => {
   }, []);
 
   return (
-    <section className="relative min-h-screen flex items-center overflow-hidden">
+    <section className="relative flex items-end overflow-hidden" style={{ minHeight: "88vh" }}>
 
       {/* Background photo */}
       <div className="absolute inset-0">
@@ -163,7 +163,7 @@ const Hero = () => {
           className="absolute inset-0"
           style={{
             background:
-              "linear-gradient(105deg, rgba(8,12,16,0.95) 0%, rgba(8,12,16,0.82) 55%, rgba(8,12,16,0.5) 100%)",
+              "linear-gradient(to top, rgba(8,12,16,0.97) 0%, rgba(8,12,16,0.75) 45%, rgba(8,12,16,0.35) 100%)",
           }}
         />
       </div>
@@ -175,8 +175,8 @@ const Hero = () => {
         style={{ opacity: 0.45, mixBlendMode: "screen" }}
       />
 
-      <div className="relative z-10 max-w-6xl mx-auto px-4 md:px-8 py-24 w-full">
-        <div className="grid lg:grid-cols-2 gap-16 items-center">
+      <div className="relative z-10 max-w-6xl mx-auto px-4 md:px-8 pb-14 pt-0 w-full">
+        <div className="grid lg:grid-cols-2 gap-10 items-end">
 
           {/* LEFT */}
           <div>
@@ -185,7 +185,7 @@ const Hero = () => {
               initial={{ opacity: 0, x: -20 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.5 }}
-              className="inline-flex items-center gap-3 mb-8 px-3 py-1.5"
+              className="inline-flex items-center gap-3 mb-3 px-3 py-1.5"
               style={{
                 border: "1px solid rgba(10,132,255,0.25)",
                 background: "rgba(10,132,255,0.06)",
@@ -236,12 +236,12 @@ const Hero = () => {
               initial={{ opacity: 0, y: 16 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.7, delay: 0.4 }}
-              className="leading-relaxed mb-8 max-w-md"
+              className="leading-relaxed mb-5 max-w-md"
               style={{ color: "rgba(210,220,230,0.5)", fontSize: "0.9rem" }}
             >
-              Washington DC's premier TV &amp; digital media production firm — delivering
-              creative technical services, cloud solutions, training, and consulting.
-              Operated by one of the best broadcast TDs in the district.
+              TV &amp; digital media production at broadcast standards. Cloud infrastructure,
+              creative technical solutions, and consulting — delivered on-site, remote,
+              or hybrid for clients worldwide.
             </motion.p>
 
             {/* CTAs */}
@@ -249,7 +249,7 @@ const Hero = () => {
               initial={{ opacity: 0, y: 16 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.7, delay: 0.55 }}
-              className="flex flex-col sm:flex-row gap-4 mb-10"
+              className="flex flex-col sm:flex-row gap-4 mb-6"
             >
               <a
                 href="#contact"
@@ -285,11 +285,11 @@ const Hero = () => {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ duration: 0.7, delay: 0.75 }}
-              className="flex gap-8 pt-6"
+              className="flex gap-8 pt-4"
               style={{ borderTop: "1px solid rgba(255,255,255,0.06)" }}
             >
               {[
-                { val: "1,000+", label: "Trained" },
+                { val: "10K+",   label: "Hrs Delivered" },
                 { val: "10+",    label: "Years" },
                 { val: "9",      label: "Clients" },
               ].map((s) => (
@@ -306,7 +306,7 @@ const Hero = () => {
             initial={{ opacity: 0, x: 30 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.8, delay: 0.3 }}
-            className="t-card p-6 hidden lg:block"
+            className="t-card p-6 hidden lg:block self-center"
             style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: "0.7rem" }}
           >
             <div

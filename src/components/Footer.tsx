@@ -37,8 +37,8 @@ const Footer = () => {
               </span>
             </div>
             <p className="text-sm leading-relaxed mb-6" style={{ color: "rgba(210,220,230,0.35)" }}>
-              Washington DC's premier TV &amp; Digital Media Production firm. Innovative.
-              Modern. Budget-Friendly. Established 2017.
+              Washington DC's premier firm in Broadcast Production, Cloud Infrastructure,
+              and Data &amp; AI. Innovative. Modern. Budget-Friendly. Established 2017.
             </p>
             <div className="flex items-center gap-3 mb-5">
               {socials.map(({ icon: Icon, href, label }) => (

@@ -1,9 +1,9 @@
 import { motion } from "framer-motion";
 
 const stats = [
-  { value: "10+",    label: "Years Experience" },
-  { value: "1,000+", label: "Professionals Trained" },
-  { value: "9",      label: "Major Media Clients" },
+  { value: "10K+", label: "Hrs. Live Production" },
+  { value: "10+",  label: "Yrs. Broadcast · Cloud · AI" },
+  { value: "9",    label: "Broadcast Clients" },
 ];
 
 const About = () => {
@@ -22,28 +22,26 @@ const About = () => {
             <p className="class-label mb-5">// IDENT — WHO WE ARE</p>
             <h2
               className="font-bold leading-tight mb-8"
-              style={{ fontSize: "clamp(2rem, 4vw, 3rem)", color: "white" }}
+              style={{ fontSize: "clamp(1.4rem, 2.6vw, 2rem)", color: "rgba(210,220,230,0.82)", letterSpacing: "-0.01em" }}
             >
-              Washington DC's Premier TV &amp; Digital Media Production Firm
+              Broadcast Production, Cloud Infrastructure, Data &amp; AI
             </h2>
             <div className="space-y-5" style={{ color: "rgba(210,220,230,0.5)", fontSize: "0.95rem" }}>
               <p className="leading-relaxed">
-                ONIV INC. is a creative solutions firm focused on differentiated strategic
-                positioning and smart design — creating engaging content and delivering
-                innovative solutions in IT Infrastructure for Digital Broadcast Operations,
-                Cloud Architecture, and Cyber Security.
+                ONIV INC. operates at the intersection of live broadcast production and
+                cloud infrastructure — delivering creative technical solutions for live
+                television, digital media, and the systems that power them.
               </p>
               <p className="leading-relaxed">
-                We provide analytics-based creative technical services in Digital Media
-                production and Live Television Broadcast programming. Our team holds expertise
-                in Cloud Architecture, Cybersecurity, AI, Virtual Reality, Technical
-                Directing, AudioVisual Production, Editing, Mixing, Signal Flow, Film,
-                and Photography.
+                From live Technical Directing and AV production to Azure cloud architecture,
+                AI integration, and cybersecurity — we build and operate the full stack.
+                On-site, remote, or hybrid, for clients who need broadcast standards and
+                modern infrastructure.
               </p>
             </div>
             <p className="mt-8 font-semibold" style={{ color: "#C9A84C" }}>
-              One aim above all: streamline your effectiveness — through our people,
-              processes, and technology.
+              One aim above all: streamline your effectiveness — through production,
+              infrastructure, and technology.
             </p>
           </motion.div>
 
