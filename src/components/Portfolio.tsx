@@ -1,6 +1,21 @@
 import { useRef, useEffect, useMemo } from "react";
+import { Film } from "lucide-react";
 
-const operations = [
+export interface VideoProject {
+  id: string;
+  code: string;
+  year: string;
+  category: string;
+  title: string;
+  description: string;
+  tags: string[];
+  youtubeUrl?: string;
+  thumbnail?: string;
+  role?: string;
+  client?: string;
+}
+
+const operations: VideoProject[] = [
   {
     id: "PRJ-001",
     code: "OP-ALPHA",
@@ -61,6 +76,40 @@ const operations = [
       "Comprehensive Azure spend audit for a federal media contractor. Identified $120K in annual savings through rightsizing and policy enforcement.",
     tags: ["Azure", "Cost Audit", "Policy"],
   },
+  // YouTube placeholder cards — replace with real content when links arrive
+  {
+    id: "VID-001",
+    code: "YT-ALPHA",
+    year: "2025",
+    category: "YOUTUBE · SERIES",
+    title: "Video Coming Soon",
+    description:
+      "A YouTube series production showcase — concept development through final delivery. Full case study and video link will be added shortly.",
+    tags: ["YouTube", "Series Production", "Storytelling"],
+    role: "Producer / Director",
+  },
+  {
+    id: "VID-002",
+    code: "YT-BRAVO",
+    year: "2025",
+    category: "YOUTUBE · DIGITAL",
+    title: "Video Coming Soon",
+    description:
+      "Digital content production for social impact storytelling. End-to-end production including shooting, editing, and post-production.",
+    tags: ["Digital Content", "Post-Production", "Social Impact"],
+    role: "Executive Producer",
+  },
+  {
+    id: "VID-003",
+    code: "YT-CHARLIE",
+    year: "2025",
+    category: "YOUTUBE · CONTENT",
+    title: "Video Coming Soon",
+    description:
+      "Multi-episode YouTube series — from pre-production planning through channel optimization and audience engagement strategy.",
+    tags: ["Multi-Episode", "Channel Strategy", "Engagement"],
+    role: "Series Producer",
+  },
 ];
 
 function shuffle<T>(arr: T[]): T[] {
@@ -73,15 +122,16 @@ function shuffle<T>(arr: T[]): T[] {
 }
 
 const CARD_WIDTH = 320;
-const CARD_GAP   = 20;
-const SPEED      = 0.5; // px per frame
+const CARD_GAP = 20;
+const SPEED = 0.5;
+
+const isPlaceholder = (op: VideoProject) => op.id.startsWith("VID-");
 
 const Portfolio = () => {
   const trackRef = useRef<HTMLDivElement>(null);
-  const rafRef   = useRef<number>(0);
-  const posRef   = useRef<number>(0);
+  const rafRef = useRef<number>(0);
+  const posRef = useRef<number>(0);
 
-  // Randomize order once per mount, duplicate for seamless loop
   const ticker = useMemo(() => {
     const shuffled = shuffle(operations);
     return [...shuffled, ...shuffled];
@@ -91,7 +141,6 @@ const Portfolio = () => {
     const track = trackRef.current;
     if (!track) return;
 
-    // Start at a random position within the first half so it never begins at card 1
     const half = (CARD_WIDTH + CARD_GAP) * (ticker.length / 2);
     posRef.current = Math.random() * half;
 
@@ -117,7 +166,8 @@ const Portfolio = () => {
           Selected <span style={{ color: "#0A84FF" }}>Operations</span>
         </h2>
         <p className="text-sm max-w-lg" style={{ color: "rgba(210,220,230,0.4)" }}>
-          A representative sample of engagements. Detailed case studies available on request.
+          A representative sample of engagements — including broadcast and digital content
+          production. Full case studies available on request.
         </p>
       </div>
 
@@ -125,8 +175,10 @@ const Portfolio = () => {
       <div
         className="relative"
         style={{
-          maskImage: "linear-gradient(to right, transparent 0%, black 6%, black 94%, transparent 100%)",
-          WebkitMaskImage: "linear-gradient(to right, transparent 0%, black 6%, black 94%, transparent 100%)",
+          maskImage:
+            "linear-gradient(to right, transparent 0%, black 6%, black 94%, transparent 100%)",
+          WebkitMaskImage:
+            "linear-gradient(to right, transparent 0%, black 6%, black 94%, transparent 100%)",
         }}
       >
         <div
@@ -145,7 +197,9 @@ const Portfolio = () => {
                 <div className="flex items-center gap-2">
                   <span className="class-label">{op.id}</span>
                   <span style={{ color: "rgba(10,132,255,0.3)", fontSize: "0.5rem" }}>·</span>
-                  <span className="class-label" style={{ color: "rgba(10,132,255,0.8)" }}>{op.code}</span>
+                  <span className="class-label" style={{ color: "rgba(10,132,255,0.8)" }}>
+                    {op.code}
+                  </span>
                 </div>
                 <span className="class-label" style={{ color: "rgba(201,168,76,0.6)" }}>
                   {op.year}
@@ -163,16 +217,87 @@ const Portfolio = () => {
               {/* Amber rule */}
               <div className="w-5 mb-3" style={{ height: "1px", background: "#C9A84C" }} />
 
+              {/* Placeholder film icon for video cards */}
+              {isPlaceholder(op) && (
+                <div
+                  className="flex items-center justify-center mb-3"
+                  style={{
+                    height: "80px",
+                    border: "1px dashed rgba(201,168,76,0.3)",
+                    background: "rgba(201,168,76,0.04)",
+                  }}
+                >
+                  <div className="flex flex-col items-center gap-1.5">
+                    <Film className="w-6 h-6" style={{ color: "rgba(201,168,76,0.5)" }} />
+                    <span
+                      style={{
+                        fontFamily: "'JetBrains Mono', monospace",
+                        fontSize: "0.55rem",
+                        letterSpacing: "0.14em",
+                        color: "rgba(201,168,76,0.5)",
+                        textTransform: "uppercase",
+                      }}
+                    >
+                      Video Coming Soon
+                    </span>
+                  </div>
+                </div>
+              )}
+
               {/* Title + description */}
               <h3 className="font-semibold text-sm mb-2 leading-snug" style={{ color: "white" }}>
                 {op.title}
               </h3>
               <p
-                className="text-xs leading-relaxed mb-4 flex-1"
+                className="text-xs leading-relaxed mb-3 flex-1"
                 style={{ color: "rgba(210,220,230,0.4)", fontSize: "0.72rem" }}
               >
                 {op.description}
               </p>
+
+              {/* Role + Client (for video cards) */}
+              {(op.role || op.client) && (
+                <div className="mb-3 space-y-1">
+                  {op.role && (
+                    <div className="flex items-center gap-2">
+                      <span
+                        className="class-label"
+                        style={{ color: "rgba(201,168,76,0.6)", fontSize: "0.55rem" }}
+                      >
+                        ROLE:
+                      </span>
+                      <span
+                        style={{
+                          fontFamily: "'JetBrains Mono', monospace",
+                          fontSize: "0.6rem",
+                          color: "rgba(210,220,230,0.5)",
+                        }}
+                      >
+                        {op.role}
+                      </span>
+                    </div>
+                  )}
+                  {op.client && (
+                    <div className="flex items-center gap-2">
+                      <span
+                        className="class-label"
+                        style={{ color: "rgba(201,168,76,0.6)", fontSize: "0.55rem" }}
+                      >
+                        CLIENT:
+                      </span>
+                      <span
+                        style={{
+                          fontFamily: "'JetBrains Mono', monospace",
+                          fontSize: "0.6rem",
+                          color: "rgba(210,220,230,0.5)",
+                        }}
+                      >
+                        {op.client}
+                      </span>
+                    </div>
+                  )}
+                </div>
+              )}
 
               {/* Tags */}
               <div className="flex flex-wrap gap-1.5 mb-4">
@@ -181,7 +306,9 @@ const Portfolio = () => {
                     key={tag}
                     className="px-2 py-0.5"
                     style={{
-                      border: "1px solid rgba(10,132,255,0.18)",
+                      border: isPlaceholder(op)
+                        ? "1px solid rgba(201,168,76,0.2)"
+                        : "1px solid rgba(10,132,255,0.18)",
                       color: "rgba(210,220,230,0.4)",
                       fontFamily: "'JetBrains Mono', monospace",
                       fontSize: "0.55rem",
@@ -198,10 +325,24 @@ const Portfolio = () => {
                 className="flex items-center gap-2 pt-3"
                 style={{ borderTop: "1px solid rgba(255,255,255,0.05)" }}
               >
-                <div className="w-1.5 h-1.5 rounded-full" style={{ background: "#00FF9C" }} />
-                <span className="class-label" style={{ color: "rgba(0,255,156,0.7)" }}>
-                  COMPLETED
-                </span>
+                {isPlaceholder(op) ? (
+                  <>
+                    <div
+                      className="w-1.5 h-1.5 rounded-full"
+                      style={{ background: "#C9A84C", animation: "blink 2s ease-in-out infinite" }}
+                    />
+                    <span className="class-label" style={{ color: "rgba(201,168,76,0.7)" }}>
+                      PENDING UPLOAD
+                    </span>
+                  </>
+                ) : (
+                  <>
+                    <div className="w-1.5 h-1.5 rounded-full" style={{ background: "#00FF9C" }} />
+                    <span className="class-label" style={{ color: "rgba(0,255,156,0.7)" }}>
+                      COMPLETED
+                    </span>
+                  </>
+                )}
               </div>
             </div>
           ))}

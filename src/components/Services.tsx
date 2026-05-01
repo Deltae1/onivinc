@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { Film, Cloud, Monitor, Lightbulb, GraduationCap, Users } from "lucide-react";
+import { Film, Cloud, Monitor, Lightbulb, GraduationCap, Users, Play } from "lucide-react";
 
 const services = [
   {
@@ -50,6 +50,14 @@ const services = [
     description:
       "From conferences and corporate events to weddings and anniversaries — professional photo and video coverage at pocket-friendly rates with same-day delivery options.",
   },
+  {
+    number: "SVC-07",
+    icon: Play,
+    tag: "YOUTUBE · DIGITAL",
+    title: "YouTube & Digital Content Production",
+    description:
+      "End-to-end YouTube series production — concept development, shooting, editing, post-production, and channel management. From single episodes to full series, we produce content that performs.",
+  },
 ];
 
 const Services = () => {
@@ -71,8 +79,8 @@ const Services = () => {
             What We <span style={{ color: "#0A84FF" }}>Deploy</span>
           </h2>
           <p className="text-sm max-w-lg" style={{ color: "rgba(210,220,230,0.4)" }}>
-            Six service lines. One firm. Covering the full spectrum from media production
-            to cloud infrastructure.
+            Seven service lines. One firm. Covering the full spectrum from YouTube series
+            production to cloud infrastructure.
           </p>
         </motion.div>
 

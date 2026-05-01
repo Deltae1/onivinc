@@ -33,7 +33,7 @@ const About = () => {
                 television, digital media, and the systems that power them.
               </p>
               <p className="leading-relaxed">
-                From live Technical Directing and AV production to Azure cloud architecture,
+                From live Technical Directing and YouTube series production to Azure cloud architecture,
                 AI integration, and cybersecurity — we build and operate the full stack.
                 On-site, remote, or hybrid, for clients who need broadcast standards and
                 modern infrastructure.

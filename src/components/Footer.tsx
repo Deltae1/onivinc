@@ -8,7 +8,7 @@ const serviceLinks = [
   "Event Coverage",
 ];
 
-const navLinks = ["Services", "Work", "About", "FAQ", "Contact"];
+const navLinks = ["Services", "Work", "About", "Contact"];
 
 const socials = [
   { icon: Mail, href: "mailto:info@onivinc.com", label: "Email" },
